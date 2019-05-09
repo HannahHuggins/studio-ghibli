@@ -105,7 +105,41 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   // Override the current require with this new one
   return newRequire;
 })({"scripts.js":[function(require,module,exports) {
+var app = document.getElementById('root');
+var logo = document.createElement('img');
+logo.src = 'logo.png';
+var container = document.createElement('div');
+container.setAttribute('class', 'container');
+app.appendChild(logo);
+app.appendChild(container);
+var request = new XMLHttpRequest();
+request.open('GET', 'https://ghibliapi.herokuapp.com/films', true);
 
+request.onload = function () {
+  // Begin accessing JSON data here
+  var data = JSON.parse(this.response);
+
+  if (request.status >= 200 && request.status < 400) {
+    data.forEach(function (movie) {
+      var card = document.createElement('div');
+      card.setAttribute('class', 'card');
+      var h1 = document.createElement('h1');
+      h1.textContent = movie.title;
+      var p = document.createElement('p');
+      movie.description = movie.description.substring(0, 300);
+      p.textContent = "".concat(movie.description, "...");
+      container.appendChild(card);
+      card.appendChild(h1);
+      card.appendChild(p);
+    });
+  } else {
+    var errorMessage = document.createElement('marquee');
+    errorMessage.textContent = "Gah, it's not working!";
+    app.appendChild(errorMessage);
+  }
+};
+
+request.send();
 },{}],"../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -133,7 +167,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53969" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55423" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
@@ -276,3 +310,4 @@ function hmrAccept(bundle, id) {
   });
 }
 },{}]},{},["../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","scripts.js"], null)
+//# sourceMappingURL=/scripts.b71a6038.map
